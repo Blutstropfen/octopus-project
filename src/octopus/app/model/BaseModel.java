@@ -1,4 +1,4 @@
-package model;
+package octopus.app.model;
 
 import org.hibernate.annotations.GenericGenerator;
 

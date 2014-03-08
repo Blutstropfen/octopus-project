@@ -1,7 +1,8 @@
-package beans;
+package octopus.app.beans;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
@@ -24,6 +25,24 @@ public class Persistence {
                 .applySettings(configuration.getProperties()).build();
         factory = configuration.buildSessionFactory(registry);
         session = factory.openSession();
+    }
+
+    public Session getSession() {
+        return session;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T getById(Class<T> entity, String id) {
+        Transaction transaction = session.beginTransaction();
+        T result = (T) session.get(entity, id);
+        transaction.commit();
+        return result;
+    }
+
+    public void persist(Object entity) {
+        Transaction transaction = session.beginTransaction();
+        session.saveOrUpdate(entity);
+        transaction.commit();
     }
 
     @PreDestroy

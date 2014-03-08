@@ -12,5 +12,12 @@
 
         <property name="hbm2ddl.auto">update</property>
 
+        <property name="hibernate.search.default.directory_provider">filesystem</property>
+        <property name="hibernate.search.default.indexBase">db-index</property>
+
+        <mapping class="octopus.app.model.Recipe"/>
+        <mapping class="octopus.app.model.Ingredient"/>
+        <mapping class="octopus.app.model.Note"/>
+
     </session-factory>
 </hibernate-configuration>
