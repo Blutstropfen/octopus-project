@@ -4,10 +4,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
-import javax.persistence.Entity;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -24,6 +21,7 @@ import static org.hibernate.search.annotations.Index.YES;
 public class Recipe extends BaseModel {
 
     @Field(index = YES)
+    @Column(unique = true)
     public String name;
 
     @Field(index= YES)
@@ -36,4 +34,14 @@ public class Recipe extends BaseModel {
 
     @ManyToMany(fetch = LAZY, cascade = {PERSIST, MERGE})
     public Set<Ingredient> ingredients;
+
+    public Recipe(String id, String name, String contents, Date published) {
+        this.id = id;
+        this.name = name;
+        this.contents = contents;
+        this.published = published;
+    }
+
+    public Recipe() {
+    }
 }

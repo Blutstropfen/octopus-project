@@ -1,6 +1,7 @@
 package octopus.app.common;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonParseException;
 import org.springframework.http.HttpInputMessage;
@@ -21,7 +22,8 @@ public class JsonConverter extends AbstractHttpMessageConverter<Object> {
 
     private static final Charset charset = Charset.forName("UTF-8");
 
-    private Gson gson = new Gson();
+    private Gson gson = new GsonBuilder()
+            .registerTypeAdapterFactory(HibernateTypeAdapter.factory).create();
 
     public JsonConverter() {
         super(new MediaType("application", "json", charset));

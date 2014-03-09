@@ -1,0 +1,7 @@
+<h1>Recent Recipes</h1>
+<div class="list-group">
+    <a href="#/recipe/{{recipe.id}}" class="list-group-item" ng-repeat="recipe in recipes">
+        <h4 class="list-group-item-heading">{{recipe.name}}</h4>
+        <p class="list-group-item-text">{{recipe.contents}}</p>
+    </a>
+</div>

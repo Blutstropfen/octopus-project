@@ -13,10 +13,9 @@ import javax.annotation.PreDestroy;
 
 /** @author Dmitry Kozlov */
 @Component
-public class Persistence {
+public class DbSessionFactory {
 
     private SessionFactory factory;
-    private Session session;
 
     @PostConstruct
     private void postConstruct() {
@@ -24,30 +23,14 @@ public class Persistence {
         ServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();
         factory = configuration.buildSessionFactory(registry);
-        session = factory.openSession();
     }
 
-    public Session getSession() {
-        return session;
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> T getById(Class<T> entity, String id) {
-        Transaction transaction = session.beginTransaction();
-        T result = (T) session.get(entity, id);
-        transaction.commit();
-        return result;
-    }
-
-    public void persist(Object entity) {
-        Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(entity);
-        transaction.commit();
+    public SessionFactory getSessionFactory() {
+        return factory;
     }
 
     @PreDestroy
     private void preDestroy() {
-        session.close();
         factory.close();
     }
 }

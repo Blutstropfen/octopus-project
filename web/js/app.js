@@ -1,10 +1,15 @@
-angular.module("OctopusApp", [])
-    .controller("RecipeCommitController", function($scope, $http) {
-        $scope.recipe = {
-            name: "Название",
-            contents: "Содержание"
-        };
-        $scope.commitRecipe = function () {
-            $http.post("/recipe", $scope.recipe)
-        }
+angular.module("OctopusApp", ["ngRoute"])
+    .config(function ($routeProvider) {
+        $routeProvider
+            .when("/", {
+                controller: "RecipeBrowser",
+                templateUrl: "views/recipe-browser.html"
+            })
+            .when("/recipe/:id", {
+                controller: "RecipeEditor",
+                templateUrl: "views/recipe-editor.html"
+            })
+            .otherwise({
+                redirectTo: "/"
+            });
     });
