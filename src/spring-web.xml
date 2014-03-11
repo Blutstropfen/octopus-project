@@ -10,13 +10,7 @@
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
-    <bean id="persistence" class="octopus.app.common.Persistence" scope="session">
-        <aop:scoped-proxy/>
-    </bean>
-
-    <bean id="search" class="octopus.app.common.Search" scope="session">
-        <aop:scoped-proxy/>
-    </bean>
+    <context:component-scan base-package="octopus.app.session"/>
 
     <mvc:annotation-driven>
         <mvc:message-converters>

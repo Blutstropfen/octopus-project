@@ -20,4 +20,13 @@ public class Ingredient extends BaseModel {
 
     @ManyToMany(mappedBy = "ingredients", fetch = LAZY)
     public Set<Recipe> recipes;
+
+    public Ingredient(String id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+
+    public Ingredient() {
+    }
 }

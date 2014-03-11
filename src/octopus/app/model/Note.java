@@ -16,4 +16,13 @@ public class Note extends BaseModel {
 
     @ManyToOne
     public Recipe owner;
+
+    public Note(String id, Date published, String contents) {
+        this.id = id;
+        this.published = published;
+        this.contents = contents;
+    }
+
+    public Note() {
+    }
 }

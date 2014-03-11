@@ -14,7 +14,14 @@
         <div class="panel-body">
             <h4>{{recipe.name}}</h4>
             <p>{{recipe.contents}}</p>
+            <span ng-repeat="ingredient in recipe.ingredients">
+                <span class="label label-primary">{{ingredient.name}}</span>
+            </span>
         </div>
     </div>
+    <h2>Заметки</h2>
+    <ul class="list-group">
+        <li class="list-group-item" ng-repeat="note in recipe.notes">{{note.contents}}</li>
+    </ul>
     <button type="submit" class="btn btn-primary" id="submit-button">Submit</button>
 </form>

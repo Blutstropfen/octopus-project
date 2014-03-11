@@ -1,9 +1,9 @@
 package octopus.app.controllers;
 
-import octopus.app.beans.DbSearchEngine;
-import octopus.app.common.Persistence;
-import octopus.app.common.Search;
+import octopus.app.session.Persistence;
+import octopus.app.session.Search;
 import octopus.app.model.Recipe;
+import octopus.app.session.dao.RecipeDAO;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,9 @@ import java.util.List;
 /** @author Dmitry Kozlov */
 @Controller
 @RequestMapping("/recipe")
-public class RecipeDataAccess {
+public class RecipeController {
+
+    // todo replace persistence/search usages with dao
 
     @Inject
     private Persistence persistence;
@@ -25,10 +27,12 @@ public class RecipeDataAccess {
     @Inject
     private Search search;
 
+    @Inject
+    private RecipeDAO recipeDAO;
+
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody Recipe get(@RequestParam(required = true) String id) {
-        Session session = persistence.getSession();
-        return (Recipe) session.get(Recipe.class, id);
+        return recipeDAO.getRecipe(id);
     }
 
     @ResponseStatus(HttpStatus.OK)
