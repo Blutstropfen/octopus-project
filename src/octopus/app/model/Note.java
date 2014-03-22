@@ -9,7 +9,7 @@ import java.util.Date;
 
 /** @author Dmitry Kozlov */
 @Entity
-public class Note extends BaseModel {
+public class Note extends BaseModel<Note> {
 
     public Date published;
     public @Lob @Type(type = "text") String contents;
@@ -17,12 +17,16 @@ public class Note extends BaseModel {
     @ManyToOne
     public Recipe owner;
 
-    public Note(String id, Date published, String contents) {
-        this.id = id;
-        this.published = published;
-        this.contents = contents;
+    public Note() {}
+
+    public Note(Note source) {
+        super(source);
+        this.published = source.published;
+        this.contents = source.contents;
     }
 
-    public Note() {
+    @Override
+    public Note shallowCopy() {
+        return new Note(this);
     }
 }

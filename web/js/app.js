@@ -12,4 +12,17 @@ angular.module("OctopusApp", ["ngRoute"])
             .otherwise({
                 redirectTo: "/"
             });
-    });
+    })
+    .controller("ScopeInitializer", function ($scope, $sce) {
+        $scope.board = [];
+        $scope.hide = function (message) {
+            $scope.board = _.without($scope.board, message)
+        }
+        $scope.raise = function (message) {
+            $scope.board.push({
+                header: message.header || "Message",
+                message: $sce.trustAs("html", message.message),
+                type: message.type || "default"
+            })
+        }
+    })

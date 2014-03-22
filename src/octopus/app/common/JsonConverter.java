@@ -22,8 +22,7 @@ public class JsonConverter extends AbstractHttpMessageConverter<Object> {
 
     private static final Charset charset = Charset.forName("UTF-8");
 
-    private Gson gson = new GsonBuilder()
-            .registerTypeAdapterFactory(HibernateTypeAdapter.factory).create();
+    private Gson gson = new Gson();
 
     public JsonConverter() {
         super(new MediaType("application", "json", charset));

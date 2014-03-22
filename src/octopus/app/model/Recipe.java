@@ -18,7 +18,7 @@ import static org.hibernate.search.annotations.Index.YES;
 /** @author Dmitry Kozlov */
 @Indexed
 @Entity
-public class Recipe extends BaseModel {
+public class Recipe extends BaseModel<Recipe> {
 
     @Field(index = YES)
     @Column(unique = true)
@@ -35,13 +35,17 @@ public class Recipe extends BaseModel {
     @ManyToMany(fetch = LAZY, cascade = {PERSIST, MERGE})
     public Set<Ingredient> ingredients;
 
-    public Recipe(String id, String name, String contents, Date published) {
-        this.id = id;
-        this.name = name;
-        this.contents = contents;
-        this.published = published;
+    public Recipe() {}
+
+    public Recipe(Recipe source) {
+        super(source);
+        this.name = source.name;
+        this.contents = source.contents;
+        this.published = source.published;
     }
 
-    public Recipe() {
+    @Override
+    public Recipe shallowCopy() {
+        return new Recipe(this);
     }
 }

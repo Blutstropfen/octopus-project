@@ -11,7 +11,7 @@ import static javax.persistence.FetchType.LAZY;
 
 /** @author Dmitry Kozlov */
 @Entity
-public class Ingredient extends BaseModel {
+public class Ingredient extends BaseModel<Ingredient> {
 
     @Column(unique = true)
     public String name;
@@ -21,12 +21,16 @@ public class Ingredient extends BaseModel {
     @ManyToMany(mappedBy = "ingredients", fetch = LAZY)
     public Set<Recipe> recipes;
 
-    public Ingredient(String id, String name, String description) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
+    public Ingredient() {}
+
+    public Ingredient(Ingredient source) {
+        super(source);
+        this.name = source.name;
+        this.description = source.description;
     }
 
-    public Ingredient() {
+    @Override
+    public Ingredient shallowCopy() {
+        return new Ingredient(this);
     }
 }

@@ -24,6 +24,10 @@
     <mvc:resources mapping="views/**" location="views/"/>
     <mvc:resources mapping="app.html" location="app.html"/>
 
+    <bean id="handlerExceptionResolver" class="org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver">
+        <property name="warnLogCategory" value="warn"/>
+    </bean>
+
     <context:component-scan base-package="octopus.app.controllers"/>
 
 </beans>

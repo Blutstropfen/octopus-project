@@ -2,6 +2,7 @@
 
 <html xmlns="http://www.w3.org/1999/html">
 <head>
+    <title>Octopus</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <link href="css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
@@ -13,8 +14,17 @@
         Octopus Project
     </div>
 </nav>
-<div class="container" ng-view>
+<div class="container" ng-controller="ScopeInitializer">
+    <div class="panel panel-{{message.type}}" ng-repeat="message in board">
+        <div class="panel-heading">
+            <b>{{message.header}}</b>
+            <button type="button" class="close" ng-click="hide(message)">&times;</button>
+        </div>
+        <div class="panel-body" ng-bind-html="message.message"></div>
+    </div>
+    <div ng-view></div>
 </div>
+<script type="text/javascript" src="js/underscore-min.js"></script>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/angular.min.js"></script>

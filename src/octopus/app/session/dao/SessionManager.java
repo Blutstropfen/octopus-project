@@ -1,4 +1,4 @@
-package octopus.app.session;
+package octopus.app.session.dao;
 
 import octopus.app.beans.DbSessionFactory;
 import org.hibernate.Session;
@@ -14,12 +14,12 @@ import javax.inject.Inject;
 /** @author Dmitry Kozlov */
 @Component
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class Persistence {
+public class SessionManager {
 
     private Session session;
 
     @Inject
-    public Persistence(DbSessionFactory dbSessionFactory) {
+    public SessionManager(DbSessionFactory dbSessionFactory) {
         SessionFactory factory = dbSessionFactory.getSessionFactory();
         session = factory.openSession();
     }
