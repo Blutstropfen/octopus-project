@@ -33,4 +33,9 @@ public class Ingredient extends BaseModel<Ingredient> {
     public Ingredient shallowCopy() {
         return new Ingredient(this);
     }
+
+    @Override
+    public Ingredient self() {
+        return this;
+    }
 }

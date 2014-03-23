@@ -13,7 +13,7 @@ import javax.inject.Inject;
 
 /** @author Dmitry Kozlov */
 @Component
-@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class SessionManager {
 
     private Session session;

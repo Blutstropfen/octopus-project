@@ -48,4 +48,9 @@ public class Recipe extends BaseModel<Recipe> {
     public Recipe shallowCopy() {
         return new Recipe(this);
     }
+
+    @Override
+    public Recipe self() {
+        return this;
+    }
 }

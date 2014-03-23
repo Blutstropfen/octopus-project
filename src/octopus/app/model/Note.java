@@ -29,4 +29,9 @@ public class Note extends BaseModel<Note> {
     public Note shallowCopy() {
         return new Note(this);
     }
+
+    @Override
+    public Note self() {
+        return this;
+    }
 }

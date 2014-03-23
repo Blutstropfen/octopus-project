@@ -21,7 +21,7 @@ angular.module("OctopusApp")
                 }
             })
             .success(function (recipe) {
-                $scope.recipe = recipe
+                $scope.recipe = recipe;
             })
             .error(function (html) {
                 $scope.raise({
@@ -30,8 +30,17 @@ angular.module("OctopusApp")
                 })
             })
         } else {
-            $scope.recipe = {}
+            $scope.recipe = {};
         }
+        $scope.addNote = function () {
+            $scope.recipe.notes.push({
+                created: true,
+                editable: true
+            });
+        };
+        $scope.removeNote = function (note) {
+            $scope.recipe.notes = _.without($scope.recipe.notes, note);
+        };
         $scope.commit = function () {
             $http.post("/recipe", $scope.recipe)
                 .success(function () {
@@ -43,5 +52,28 @@ angular.module("OctopusApp")
                         message: html
                     })
                 })
+        };
+    });
+
+angular.module("OctopusApp")
+    .controller("NoteEditor", function ($scope) {
+        $scope.enableEditor = function () {
+            $scope.note.editable = true;
+            $scope.editable = {
+                contents: $scope.note.contents
+            };
+        };
+
+        $scope.discardEditor = function () {
+            $scope.note.editable = false;
+            if ($scope.note.created) {
+                $scope.removeNote($scope.note)
+            }
+        };
+
+        $scope.saveEditor = function () {
+            $scope.note.editable = false;
+            $scope.note.created = false;
+            $scope.note.contents = $scope.editable.contents;
         }
     });

@@ -25,4 +25,5 @@ public abstract class BaseModel<Self extends BaseModel<Self>> {
     }
 
     public abstract Self shallowCopy();
+    public abstract Self self();
 }
