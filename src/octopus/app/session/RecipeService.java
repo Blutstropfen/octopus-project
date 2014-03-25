@@ -4,6 +4,7 @@ import octopus.app.common.CollectionUtil;
 import octopus.app.model.Ingredient;
 import octopus.app.model.Note;
 import octopus.app.model.Recipe;
+import octopus.app.session.dao.IngredientDAO;
 import octopus.app.session.dao.RecipeDAO;
 import org.apache.commons.lang.ObjectUtils;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,9 @@ public class RecipeService {
 
     @Inject
     private RecipeDAO dao;
+
+    @Inject
+    private IngredientDAO ingredients;
 
     public Recipe getBy(String id) {
         return copyOf(dao.getBy(id));
@@ -52,8 +56,14 @@ public class RecipeService {
         for (Ingredient ingredient : recipe.ingredients) {
             Ingredient dbIngredient = dbIngredients.get(ingredient.id);
             if (!ObjectUtils.equals(dbIngredient.name, ingredient.name)) {
-                ingredient.id = null; // Save as new;
-                ingredient.description = null;
+                dbIngredient = ingredients.getByName(ingredient.name);
+                if (dbIngredient != null) {
+                    ingredient.id = dbIngredient.id;
+                    ingredient.description = dbIngredient.description;
+                } else {
+                    ingredient.id = null; // Save as new.
+                    ingredient.description = null;
+                }
             }
         }
         dao.merge(recipe);
