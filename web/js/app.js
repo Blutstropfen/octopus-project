@@ -9,6 +9,10 @@ angular.module("OctopusApp", ["ngRoute"])
                 controller: "RecipeEditor",
                 templateUrl: "views/recipe-editor.html"
             })
+            .when("/recipe", {
+                controller: "RecipeEditor",
+                templateUrl: "views/recipe-editor.html"
+            })
             .otherwise({
                 redirectTo: "/"
             });
@@ -17,7 +21,7 @@ angular.module("OctopusApp", ["ngRoute"])
         $scope.board = [];
         $scope.hide = function (message) {
             $scope.board = _.without($scope.board, message)
-        }
+        };
         $scope.raise = function (message) {
             $scope.board.push({
                 header: message.header || "Message",
@@ -26,3 +30,10 @@ angular.module("OctopusApp", ["ngRoute"])
             })
         }
     })
+    .controller("SearchController", function ($scope, $location) {
+        $scope.search = function (text) {
+            if (text) {
+                $location.search("search", text).path("/");
+            }
+        }
+    });

@@ -2,6 +2,28 @@ body {
   padding-top: 70px;
 }
 
-.icon-control {
-    cursor: default;
+.control {
+    cursor: pointer;
+}
+
+.vertical-spacing {
+    height: 32px;
+}
+
+.tag {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 2em;
+    height: 25px;
+    margin-right: 5px;
+    margin-bottom: 3px;
+}
+
+.tag-input {
+    color: black;
+}
+
+.footer {
+    color: #adadad;
+    text-align: center;
 }

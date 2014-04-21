@@ -1,5 +1,6 @@
 package octopus.app.model;
 
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -29,7 +30,7 @@ public class Recipe extends BaseModel<Recipe> {
 
     public Date published;
 
-    @OneToMany(mappedBy = "owner", fetch = LAZY, cascade = ALL)
+    @OneToMany(mappedBy = "owner", fetch = LAZY, cascade = ALL, orphanRemoval = true)
     public List<Note> notes;
 
     @ManyToMany(fetch = LAZY, cascade = {PERSIST, MERGE})

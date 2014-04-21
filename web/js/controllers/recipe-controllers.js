@@ -1,15 +1,35 @@
 angular.module("OctopusApp")
-    .controller("RecipeBrowser", function ($scope, $http, $sce) {
-        $http.get("/recipe/recent")
-            .success(function (data) {
-                $scope.recipes = data
-            })
-            .error(function (html) {
+    .controller("RecipeBrowser", function ($scope, $http, $routeParams) {
+        var search = $routeParams.search;
+        $scope.showAlert = false;
+        if (search) {
+            $http.get("/recipe/search", {
+                params: {
+                    text: search
+                }
+            }).success(function (data) {
+                $scope.recipes = data;
+                if (!data.length) {
+                    $scope.showAlert = true;
+                }
+            }).error(function (html) {
                 $scope.raise({
                     type: "danger",
                     message: html
                 })
-            });
+            })
+        } else {
+            $http.get("/recipe/recent")
+                .success(function (data) {
+                    $scope.recipes = data
+                })
+                .error(function (html) {
+                    $scope.raise({
+                        type: "danger",
+                        message: html
+                    })
+                });
+        }
     });
 
 angular.module("OctopusApp")
@@ -30,8 +50,19 @@ angular.module("OctopusApp")
                 })
             })
         } else {
-            $scope.recipe = {};
+            $scope.recipe = {
+                ingredients: [],
+                notes: []
+            }
         }
+        $scope.addIngredient = function () {
+            $scope.recipe.ingredients.push({
+                editable: true
+            });
+        };
+        $scope.removeIngredient = function (ingredient) {
+            $scope.recipe.ingredients = _.without($scope.recipe.ingredients, ingredient);
+        };
         $scope.addNote = function () {
             $scope.recipe.notes.push({
                 created: true,
@@ -43,6 +74,25 @@ angular.module("OctopusApp")
         };
         $scope.commit = function () {
             $http.post("/recipe", $scope.recipe)
+                .success(function (response) {
+                    if (response.status == "ok") {
+                        $location.path("/")
+                    } else {
+                        $scope.raise({
+                            type: "danger",
+                            message: response.message
+                        })
+                    }
+                })
+                .error(function (html) {
+                    $scope.raise({
+                        type: "danger",
+                        message: html
+                    })
+                })
+        };
+        $scope.remove = function () {
+            $http.delete("/recipe", {params: {id: $scope.recipe.id}})
                 .success(function () {
                     $location.path("/")
                 })
@@ -52,7 +102,17 @@ angular.module("OctopusApp")
                         message: html
                     })
                 })
-        };
+        }
+        $scope.back = function () {
+            $location.path("/")
+        }
+    });
+
+angular.module("OctopusApp")
+    .controller("IngredientEditor", function ($scope) {
+        $scope.disableEditor = function () {
+            $scope.ingredient.editable = false;
+        }
     });
 
 angular.module("OctopusApp")

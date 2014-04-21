@@ -33,11 +33,23 @@ public class RecipeDAO {
         return (Recipe) query.uniqueResult();
     }
 
-    public void save(Recipe recipe) {
+    public void persist(Recipe recipe) {
         Session session = manager.getSession();
         Transaction transaction = session.beginTransaction();
         try {
-            session.save(recipe);
+            session.persist(recipe);
+            transaction.commit();
+        } catch (RuntimeException exception) {
+            transaction.rollback();
+            throw exception;
+        }
+    }
+
+    public void remove(Recipe recipe) {
+        Session session = manager.getSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            session.delete(recipe);
             transaction.commit();
         } catch (RuntimeException exception) {
             transaction.rollback();
@@ -59,7 +71,7 @@ public class RecipeDAO {
 
     public List getRecent() {
         Session session = manager.getSession();
-        Query query = session.createQuery("select new Recipe(r) from Recipe as r order by r.published");
+        Query query = session.createQuery("select new Recipe(r) from Recipe as r order by r.published desc");
         return query.setMaxResults(6).list();
     }
 }

@@ -11,8 +11,17 @@
             <h3 class="panel-title">Ингредиенты</h3>
         </div>
         <div class="panel-body">
-            <span ng-repeat="ingredient in recipe.ingredients">
-                <span class="label label-primary">{{ingredient.name}}</span>
+            <span class="label label-primary tag" ng-repeat="ingredient in recipe.ingredients" ng-controller="IngredientEditor">
+                <i class="glyphicon glyphicon-tag"></i>
+                <span ng-hide="ingredient.editable">
+                    {{ingredient.name}}
+                </span>
+                <input class="tag-input" type="text" ng-show="ingredient.editable" ng-model="ingredient.name"/>
+                <i class="glyphicon glyphicon-ok control" ng-show="ingredient.editable" ng-click="disableEditor()"></i>
+                <i class="glyphicon glyphicon-remove control" ng-click="removeIngredient(ingredient)"></i>
+            </span>
+            <span class="label label-success tag">
+                <i class="glyphicon glyphicon-plus control" ng-click="addIngredient()"></i>
             </span>
         </div>
     </div>
@@ -20,13 +29,11 @@
     <ul class="list-group">
         <li class="list-group-item" ng-repeat="note in recipe.notes">
             <div ng-controller="NoteEditor">
-            <div ng-hide="note.editable" class="row">
-                <div class="col-lg-11">{{note.contents}}</div>
-                <div class="col-lg-1">
-                    <p class="text-right">
-                        <i class="glyphicon glyphicon-edit icon-control" ng-click="enableEditor()"></i>
-                        <i class="glyphicon glyphicon-remove icon-control" ng-click="removeNote(note)"></i>
-                    </p>
+            <div ng-hide="note.editable">
+                {{note.contents}}
+                <div class="pull-right">
+                    <i class="glyphicon glyphicon-edit control" ng-click="enableEditor()"></i>
+                    <i class="glyphicon glyphicon-remove control" ng-click="removeNote(note)"></i>
                 </div>
             </div>
             <div ng-show="note.editable">
@@ -44,5 +51,7 @@
             <button type="button" class="btn btn-default btn-sm" ng-click="addNote()">Добавить заметку</button>
         </li>
     </ul>
-    <button type="submit" class="btn btn-primary" id="submit-button">Submit</button>
+    <button type="button" class="btn btn-default" ng-click="back()">Назад</button>
+    <button type="button" class="btn btn-danger" ng-click="remove()" ng-show="recipe.id">Удалить</button>
+    <button type="submit" class="btn btn-primary" id="submit-button">Сохранить</button>
 </form>

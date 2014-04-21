@@ -1,4 +1,4 @@
-package octopus.app.session;
+package octopus.app.session.dao;
 
 import octopus.app.session.dao.SessionManager;
 import org.hibernate.Query;
@@ -6,6 +6,7 @@ import org.hibernate.search.FullTextSession;
 import org.hibernate.search.SearchFactory;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -13,7 +14,7 @@ import java.util.List;
 
 /** @author Dmitry Kozlov */
 @Component
-@Scope(value = "session")
+@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class Search {
 
     private FullTextSession session;
