@@ -50,4 +50,10 @@ public class RecipeController {
     public @ResponseBody List search(@RequestParam(required = true) String text) {
         return service.search(text);
     }
+
+    @RequestMapping(value = "/ingredient-search", method = RequestMethod.POST,
+            produces = "appliaction/json", consumes = "application/json")
+    public @ResponseBody List searchByIngredients(@RequestBody List<String> ingredientsId) {
+        return service.searchByIngredients(ingredientsId);
+    }
 }

@@ -13,6 +13,10 @@ angular.module("OctopusApp", ["ngRoute"])
                 controller: "RecipeEditor",
                 templateUrl: "views/recipe-editor.html"
             })
+            .when("/search", {
+                controller: "SearchController",
+                templateUrl: "views/search-form.html"
+            })
             .otherwise({
                 redirectTo: "/"
             });
@@ -30,7 +34,7 @@ angular.module("OctopusApp", ["ngRoute"])
             })
         }
     })
-    .controller("SearchController", function ($scope, $location) {
+    .controller("SearchFormController", function ($scope, $location) {
         $scope.search = function (text) {
             if (text) {
                 $location.search("search", text).path("/");

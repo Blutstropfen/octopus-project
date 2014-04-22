@@ -12,6 +12,7 @@ import org.hibernate.criterion.Property;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +32,16 @@ public class RecipeDAO {
         Session session = manager.getSession();
         Query query = session.createQuery("from Recipe where name = :name").setParameter("name", name);
         return (Recipe) query.uniqueResult();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Recipe> getByIngredients(List<String> ingredientsId) {
+        Session session = manager.getSession();
+        Query query = session.createQuery(
+                "from Recipe as recipe where not exists " +
+                        "(from Recipe as r join r.ingredients as i where r.id = recipe.id and i.id not in (:ingredientsId))");
+        query.setParameterList("ingredientsId", ingredientsId);
+        return (List<Recipe>) query.list();
     }
 
     public void persist(Recipe recipe) {

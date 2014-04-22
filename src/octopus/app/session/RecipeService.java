@@ -28,15 +28,6 @@ public class RecipeService {
     @Inject
     private Search search;
 
-    public List<Recipe> search(String text) {
-        List<Recipe> searchResults = search.search(Recipe.class, text, new String[] {"name", "contents"});
-        List<Recipe> result = new ArrayList<>(searchResults.size());
-        for (Recipe dbRecipe : searchResults) {
-            result.add(dbRecipe.shallowCopy());
-        }
-        return result;
-    }
-
     public Recipe getBy(String id) {
         Recipe recipe = dao.getBy(id);
         if (recipe != null) {
@@ -78,7 +69,7 @@ public class RecipeService {
         try {
             dao.merge(recipe);
         } catch (ConstraintViolationException exception) {
-            return ServiceResponse.exception("Нарушено ограничение уникальности имени!");
+            return ServiceResponse.exception("Нарушено ограничение уникальности имени.");
         }
         return ServiceResponse.ok();
     }
@@ -112,7 +103,7 @@ public class RecipeService {
         try {
             dao.persist(recipe);
         } catch (ConstraintViolationException exception) {
-            return ServiceResponse.exception("Нарушено ограничение уникальности имени!");
+            return ServiceResponse.exception("Нарушено ограничение уникальности имени.");
         }
         return ServiceResponse.ok();
     }
@@ -122,6 +113,22 @@ public class RecipeService {
         if (dbRecipe != null) {
             dao.remove(dbRecipe);
         }
+    }
+
+    public List<Recipe> search(String text) {
+        return listShallowCopy(search.search(Recipe.class, text, new String[] {"name", "contents"}));
+    }
+
+    public List<Recipe> searchByIngredients(List<String> ingredientsIds) {
+        return listShallowCopy(dao.getByIngredients(ingredientsIds));
+    }
+
+    private List<Recipe> listShallowCopy(List<Recipe> dbRecipes) {
+        List<Recipe> result = new ArrayList<>(dbRecipes.size());
+        for (Recipe dbRecipe : dbRecipes) {
+            result.add(dbRecipe.shallowCopy());
+        }
+        return result;
     }
 
     @SuppressWarnings("unchecked")

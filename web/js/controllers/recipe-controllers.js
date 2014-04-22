@@ -102,7 +102,7 @@ angular.module("OctopusApp")
                         message: html
                     })
                 })
-        }
+        };
         $scope.back = function () {
             $location.path("/")
         }

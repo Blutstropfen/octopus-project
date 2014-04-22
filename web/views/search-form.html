@@ -1,0 +1,32 @@
+<h3>Поиск</h3>
+<form role="form" ng-submit="submit()">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Ингредиенты</h3>
+        </div>
+        <div class="panel-body">
+            <span class="label label-{{ingredient.type}} tag" ng-repeat="ingredient in ingredients">
+                <i class="glyphicon glyphicon-tag"></i>
+                <span ng-hide="ingredient.editable">
+                    {{ingredient.name}}
+                </span>
+                <input class="tag-input" type="text" ng-show="ingredient.editable" ng-model="ingredient.name"/>
+                <i class="glyphicon glyphicon-ok control" ng-show="ingredient.editable" ng-click="confirmIngredient(ingredient)"></i>
+                <i class="glyphicon glyphicon-remove control" ng-click="removeIngredient(ingredient)"></i>
+            </span>
+            <span class="label label-success tag">
+                <i class="glyphicon glyphicon-plus control" ng-click="addIngredient()"></i>
+            </span>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-default">Найти</button>
+</form>
+<div class="list-group">
+    <a href="#/recipe/{{recipe.id}}" class="list-group-item" ng-repeat="recipe in recipes">
+        <h4 class="list-group-item-heading">{{recipe.name}}</h4>
+        <p class="list-group-item-text">{{recipe.contents}}</p>
+    </a>
+</div>
+<div class="alert alert-warning" ng-show="showAlert">
+    По вашему запросу ничего не найдено
+</div>
