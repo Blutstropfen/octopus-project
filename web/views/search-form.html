@@ -1,4 +1,7 @@
 <h3>Поиск</h3>
+<p>
+    Укажите какие ингредиенты у вас в наличии, и мы сможем рассказать вам что можно из этого приготовить!
+</p>
 <form role="form" ng-submit="submit()">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -21,6 +24,7 @@
     </div>
     <button type="submit" class="btn btn-default">Найти</button>
 </form>
+<div class="vertical-spacing"></div>
 <div class="list-group">
     <a href="#/recipe/{{recipe.id}}" class="list-group-item" ng-repeat="recipe in recipes">
         <h4 class="list-group-item-heading">{{recipe.name}}</h4>

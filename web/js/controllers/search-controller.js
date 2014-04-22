@@ -17,7 +17,7 @@ angular.module("OctopusApp")
                 }
             }).success(function (id) {
                 if (id) {
-                    ingredient.id = id;
+                    ingredient.id = JSON.parse(id);
                     ingredient.type = "primary";
                     ingredient.invalid = false;
                 }
@@ -42,6 +42,7 @@ angular.module("OctopusApp")
                 return ingredient.id;
             });
             if (valid) {
+                console.log(ids);
                 $http.post("/recipe/ingredient-search", ids)
                     .success(function (data) {
                         $scope.recipes = data;

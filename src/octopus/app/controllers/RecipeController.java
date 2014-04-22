@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import java.util.Collections;
 import java.util.List;
 
 /** @author Dmitry Kozlov */
@@ -52,8 +53,11 @@ public class RecipeController {
     }
 
     @RequestMapping(value = "/ingredient-search", method = RequestMethod.POST,
-            produces = "appliaction/json", consumes = "application/json")
+            produces = "application/json", consumes = "application/json")
     public @ResponseBody List searchByIngredients(@RequestBody List<String> ingredientsId) {
+        if (ingredientsId.isEmpty()) {
+            return Collections.emptyList();
+        }
         return service.searchByIngredients(ingredientsId);
     }
 }

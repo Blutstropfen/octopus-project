@@ -28,7 +28,7 @@ angular.module("OctopusApp", ["ngRoute"])
         };
         $scope.raise = function (message) {
             $scope.board.push({
-                header: message.header || "Message",
+                header: message.header || "Сообщение",
                 message: $sce.trustAs("html", message.message),
                 type: message.type || "default"
             })

@@ -1,6 +1,7 @@
 package octopus.app.session;
 
 import octopus.app.common.CollectionUtil;
+import octopus.app.common.Messages;
 import octopus.app.common.ServiceResponse;
 import octopus.app.model.Ingredient;
 import octopus.app.model.Note;
@@ -9,6 +10,8 @@ import octopus.app.session.dao.IngredientDAO;
 import octopus.app.session.dao.RecipeDAO;
 import octopus.app.session.dao.Search;
 import org.apache.commons.lang.ObjectUtils;
+import org.hibernate.PersistentObjectException;
+import org.hibernate.StaleObjectStateException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.stereotype.Component;
 
@@ -69,7 +72,11 @@ public class RecipeService {
         try {
             dao.merge(recipe);
         } catch (ConstraintViolationException exception) {
-            return ServiceResponse.exception("Нарушено ограничение уникальности имени.");
+            return ServiceResponse.exception(Messages.constraint_violation);
+        } catch (StaleObjectStateException exception) {
+            return ServiceResponse.exception(Messages.concurrent_modification);
+        } catch (PersistentObjectException exception) {
+            return ServiceResponse.exception(Messages.detached_entity);
         }
         return ServiceResponse.ok();
     }
@@ -103,7 +110,11 @@ public class RecipeService {
         try {
             dao.persist(recipe);
         } catch (ConstraintViolationException exception) {
-            return ServiceResponse.exception("Нарушено ограничение уникальности имени.");
+            return ServiceResponse.exception(Messages.constraint_violation);
+        } catch (StaleObjectStateException exception) {
+            return ServiceResponse.exception(Messages.concurrent_modification);
+        } catch (PersistentObjectException exception) { // Detached entity passed to persist.
+            return ServiceResponse.exception(Messages.detached_entity);
         }
         return ServiceResponse.ok();
     }
