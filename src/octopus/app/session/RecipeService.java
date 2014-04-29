@@ -10,6 +10,7 @@ import octopus.app.session.dao.IngredientDAO;
 import octopus.app.session.dao.RecipeDAO;
 import octopus.app.session.dao.Search;
 import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.PersistentObjectException;
 import org.hibernate.StaleObjectStateException;
 import org.hibernate.exception.ConstraintViolationException;
@@ -63,6 +64,9 @@ public class RecipeService {
     }
 
     private ServiceResponse merge(Recipe dbRecipe, Recipe recipe) {
+        if (StringUtils.isBlank(recipe.name)) {
+            return ServiceResponse.exception(Messages.no_name);
+        }
         recipe.published = dbRecipe.published; // Preserve publication date;
         Map<String, Ingredient> dbIngredients = CollectionUtil.toMap(dbRecipe.ingredients);
         for (Note note : recipe.notes) {
@@ -102,6 +106,9 @@ public class RecipeService {
     }
 
     private ServiceResponse persist(Recipe recipe) {
+        if (StringUtils.isBlank(recipe.name)) {
+            return ServiceResponse.exception(Messages.no_name);
+        }
         recipe.published = new Date();
         recipe.ingredients = mergeIngredients(recipe, Collections.<String, Ingredient>emptyMap());
         for (Note note : recipe.notes) {

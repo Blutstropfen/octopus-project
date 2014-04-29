@@ -2,7 +2,8 @@ package octopus.app.common;
 
 /** @author Dmitry Kozlov */
 public interface Messages {
-    String constraint_violation = "Нарушено ограчение уникальности имени";
+    String no_name = "Не указано имя рецепта.";
+    String constraint_violation = "Нарушено ограчение уникальности имени.";
     String concurrent_modification =
             "Сохранение невозможно, так как данные были изменены другим пользователем. " +
                     "Обратите внимание на все несохраненные изменения.";
